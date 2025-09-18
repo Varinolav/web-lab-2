@@ -84,7 +84,7 @@ export default class App {
             let data = this.dataManager.getData();
             $.ajax({
                 url: this.config.get("path") + $.param(data),
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 success: (response): void => {
                     if (response.error != null) {

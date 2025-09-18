@@ -6,7 +6,7 @@ var dataManager_1 = require("./dataManager");
 var ResultTableManager_1 = require("./ResultTableManager");
 var SvgManager_1 = require("./SvgManager");
 var config = new config_1.default();
-config.set("path", "/calculate?");
+config.set("path", "/server?");
 // config.set("path", "/fcgi-bin/app.jar?"); // helios
 var dataManager = new dataManager_1.default();
 var table = document.getElementById("result-table");

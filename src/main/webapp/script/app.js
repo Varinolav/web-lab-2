@@ -83,7 +83,7 @@ var App = /** @class */ (function () {
             var data = _this.dataManager.getData();
             $.ajax({
                 url: _this.config.get("path") + $.param(data),
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 success: function (response) {
                     if (response.error != null) {

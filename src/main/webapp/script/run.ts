@@ -6,7 +6,7 @@ import SvgManager from "./SvgManager";
 
 
 let config: Config = new Config();
-config.set("path", "/calculate?");
+config.set("path", "/server?");
 // config.set("path", "/fcgi-bin/app.jar?"); // helios
 let dataManager: DataManager = new DataManager();
 const table: HTMLTableElement = document.getElementById("result-table") as HTMLTableElement;
