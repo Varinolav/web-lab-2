@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'ru.varino'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+
+}
+
+dependencies {
+    compileOnly('jakarta.servlet:jakarta.servlet-api:6.0.0')
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class':  'ru.varino.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    archiveFileName = 'lab2.jar'
+}
+
+war {
+    archiveFileName = 'app.war'
+}
