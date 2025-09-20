@@ -9,7 +9,7 @@ export default class ResultTableManager {
     constructor(table: HTMLTableElement) {
         this.allItems = [];
         this.table = table;
-        this.loadFromStorage();
+        // this.loadFromStorage();
     }
 
     public nextPage(): void {
@@ -22,7 +22,6 @@ export default class ResultTableManager {
         this.allItems = [];
         this.renderTable();
         this.updatePaginationButtons();
-        this.saveToStorage();
     }
 
     public previousPage(): void {
@@ -40,7 +39,6 @@ export default class ResultTableManager {
         this.curPage = this.getTotalPages();
         this.renderTable();
         this.updatePaginationButtons();
-        this.saveToStorage();
     }
 
     private getCurrentPageData(): any[] {
@@ -49,21 +47,16 @@ export default class ResultTableManager {
         return this.allItems.slice(startIndex, endIndex);
     }
 
-    private saveToStorage(): void {
-        const data = {
-            items: this.allItems,
-        };
-        sessionStorage.setItem(this.storageKey, JSON.stringify(data));
-    }
 
-    private loadFromStorage(): void {
+
+    /*private loadFromStorage(): void {
         const data = sessionStorage.getItem(this.storageKey);
         if (!data) return;
         const parsedData = JSON.parse(data);
         this.allItems = parsedData.items;
         this.renderTable();
         this.updatePaginationButtons();
-    }
+    }*/
 
     private renderTable(): void {
         const tbody = this.table.querySelector('#result-tbody') as HTMLTableSectionElement;
@@ -80,7 +73,6 @@ export default class ResultTableManager {
             row.insertCell(2).textContent = item.r;
             row.insertCell(3).textContent = item.hit ? 'Да' : 'Нет';
             row.insertCell(4).textContent = item.now;
-            row.insertCell(5).textContent = item.time;
         });
     }
 

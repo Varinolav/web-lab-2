@@ -82,6 +82,8 @@ export default class App {
             }
 
             let data = this.dataManager.getData();
+            data["action"] = "submit";
+
             $.ajax({
                 url: this.config.get("path") + $.param(data),
                 type: "GET",
@@ -92,7 +94,7 @@ export default class App {
                         console.log(response)
                         return;
                     }
-                    const rowData: object = {...data, hit: response.result, now: response.now, time: response.time};
+                    const rowData: object = {...data, hit: response.result, now: response.now};
                     this.tableManager.addData(rowData);
                 },
             });

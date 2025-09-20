@@ -1,5 +1,6 @@
 package ru.varino;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,8 @@ public class PointService {
 
     }
 
-    public void submit() throws IOException {
-        response.sendRedirect("./checkArea?" + request.getQueryString());
+    public void submit() throws IOException, ServletException {
+        request.getRequestDispatcher("/check").forward(request, response);
     }
 
 }

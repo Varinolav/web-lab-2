@@ -20,7 +20,7 @@ public class Point {
         this.x = new BigDecimal(x);
         this.y = new BigDecimal(y);
         this.r = new BigDecimal(r);
-        this.time = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss").format(LocalDateTime.now().atZone(ZoneId.of("Europe/Moscow")));
+        this.time = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss").format(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
         this.isHit = new PointChecker(this).isHit();
     }
 

@@ -7,7 +7,7 @@ var ResultTableManager = /** @class */ (function () {
         this.storageKey = 'results';
         this.allItems = [];
         this.table = table;
-        this.loadFromStorage();
+        // this.loadFromStorage();
     }
     ResultTableManager.prototype.nextPage = function () {
         if (this.curPage < this.getTotalPages())
@@ -19,7 +19,6 @@ var ResultTableManager = /** @class */ (function () {
         this.allItems = [];
         this.renderTable();
         this.updatePaginationButtons();
-        this.saveToStorage();
     };
     ResultTableManager.prototype.previousPage = function () {
         if (this.curPage > 1)
@@ -35,28 +34,20 @@ var ResultTableManager = /** @class */ (function () {
         this.curPage = this.getTotalPages();
         this.renderTable();
         this.updatePaginationButtons();
-        this.saveToStorage();
     };
     ResultTableManager.prototype.getCurrentPageData = function () {
         var startIndex = (this.curPage - 1) * this.pageSize;
         var endIndex = startIndex + this.pageSize;
         return this.allItems.slice(startIndex, endIndex);
     };
-    ResultTableManager.prototype.saveToStorage = function () {
-        var data = {
-            items: this.allItems,
-        };
-        sessionStorage.setItem(this.storageKey, JSON.stringify(data));
-    };
-    ResultTableManager.prototype.loadFromStorage = function () {
-        var data = sessionStorage.getItem(this.storageKey);
-        if (!data)
-            return;
-        var parsedData = JSON.parse(data);
+    /*private loadFromStorage(): void {
+        const data = sessionStorage.getItem(this.storageKey);
+        if (!data) return;
+        const parsedData = JSON.parse(data);
         this.allItems = parsedData.items;
         this.renderTable();
         this.updatePaginationButtons();
-    };
+    }*/
     ResultTableManager.prototype.renderTable = function () {
         var tbody = this.table.querySelector('#result-tbody');
         tbody.innerHTML = '';
@@ -72,7 +63,6 @@ var ResultTableManager = /** @class */ (function () {
             row.insertCell(2).textContent = item.r;
             row.insertCell(3).textContent = item.hit ? 'Да' : 'Нет';
             row.insertCell(4).textContent = item.now;
-            row.insertCell(5).textContent = item.time;
         });
     };
     ResultTableManager.prototype.updatePaginationButtons = function () {

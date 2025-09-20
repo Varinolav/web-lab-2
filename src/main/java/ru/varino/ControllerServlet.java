@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,11 +30,11 @@ public class ControllerServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
-
         try {
             pointService.validate(x, y, r);
         } catch (Exception e) {
             sendError(response, e.getMessage());
+            return;
         }
 
         if (ActionType.CLEAR.action().equals(action)) {

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ page import="ru.varino.Point" %>
+<%@ page import="ru.varino.PointsBean" %>
 <!doctype html>
 <html lang="ru">
 <head>
@@ -7,7 +9,8 @@
     <title>Лабораторная №1 — Вариант 466985</title>
 
     <!-- Enterprise-grade typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="jquery.min.js" defer></script>
     <script src="bundle.js" defer></script>
@@ -26,7 +29,8 @@
         <!-- GRAPH -->
         <section class="graph card" aria-label="График">
             <div class="graph__frame">
-                <svg width="600" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Система координат">
+                <svg width="600" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
+                     aria-label="Система координат">
                     <defs>
                         <linearGradient id="gradArea" x1="0" y1="0" x2="1" y2="1">
                             <stop offset="0%" stop-color="#60a5fa"/>
@@ -47,7 +51,7 @@
                     <line x1="250" y1="450" x2="250" y2="50" stroke-width="2" marker-end="url(#arrowhead)"/>
 
                     <text x="510" y="255" font-size="16">x</text>
-                    <text x="255" y="40"  font-size="16">y</text>
+                    <text x="255" y="40" font-size="16">y</text>
 
                     <text x="345" y="270" font-size="14">R</text>
                     <text x="260" y="155" font-size="14">R</text>
@@ -98,7 +102,8 @@
             <div class="field">
                 <div class="label"><strong>Y</strong></div>
                 <div class="input-wrap">
-                    <input type="number" id="y-input" name="Y-input" placeholder="От -5 до 5" class="y-input" inputmode="decimal"/>
+                    <input type="number" id="y-input" name="Y-input" placeholder="От -5 до 5" class="y-input"
+                           inputmode="decimal"/>
                 </div>
             </div>
 
@@ -128,12 +133,32 @@
                 <th>Y</th>
                 <th>R</th>
                 <th>Попал?</th>
-                <th>Дата</th>
                 <th>Время</th>
             </tr>
             </thead>
             <tbody id="result-tbody">
-            <!-- JS populates -->
+            <% PointsBean bean = (PointsBean) request.getSession().getAttribute("pointsBean");
+                if (bean != null) {
+
+                    for (Point point : bean.getPoints()) { %>
+            <tr>
+                <td>
+                    <%= point.getX() %>
+                </td>
+                <td>
+                    <%= point.getY() %>
+                </td>
+                <td>
+                    <%= point.getR() %>
+                </td>
+                <td>
+                    <%= point.getIsHit() ? "Да" : "Нет"%>
+                </td>
+                <td><%= point.getTime()%>
+                </td>
+            </tr>
+            <% }
+            }%>
             </tbody>
         </table>
 

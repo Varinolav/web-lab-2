@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -24,12 +25,14 @@ public class AreaCheckServlet extends HttpServlet {
 
         Point point = new Point(x, y, r);
 
-//        request.setAttribute("x", x);
-//        request.setAttribute("y", y);
-//        request.setAttribute("r", r);
-//        request.setAttribute("hit", point.getIsHit());
-//        request.setAttribute("now", point.getTime());
-//        request.getRequestDispatcher("./index.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        PointsBean bean = (PointsBean) session.getAttribute("pointsBean");
+        if (bean == null) {
+            bean = new PointsBean();
+            session.setAttribute("pointsBean", bean);
+        }
+        bean.add(point);
+
         var gson = new Gson();
         Map<String, Object> json = new HashMap<>();
         json.put("x", x);

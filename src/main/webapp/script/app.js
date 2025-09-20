@@ -81,6 +81,7 @@ var App = /** @class */ (function () {
                 return;
             }
             var data = _this.dataManager.getData();
+            data["action"] = "submit";
             $.ajax({
                 url: _this.config.get("path") + $.param(data),
                 type: "GET",
@@ -91,7 +92,7 @@ var App = /** @class */ (function () {
                         console.log(response);
                         return;
                     }
-                    var rowData = __assign(__assign({}, data), { hit: response.result, now: response.now, time: response.time });
+                    var rowData = __assign(__assign({}, data), { hit: response.result, now: response.now });
                     _this.tableManager.addData(rowData);
                 },
             });
