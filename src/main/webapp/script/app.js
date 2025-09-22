@@ -11,9 +11,9 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var config_1 = require("./config");
 var App = /** @class */ (function () {
-    function App(config, tableManager, dataManager, svgManager) {
-        this.config = config;
+    function App(tableManager, dataManager, svgManager) {
         this.tableManager = tableManager;
         this.dataManager = dataManager;
         this.svgManager = svgManager;
@@ -83,18 +83,21 @@ var App = /** @class */ (function () {
             var data = _this.dataManager.getData();
             data["action"] = "submit";
             $.ajax({
-                url: _this.config.get("path") + $.param(data),
+                url: config_1.default.path + $.param(data),
                 type: "GET",
                 dataType: "json",
                 success: function (response) {
-                    if (response.error != null) {
-                        alert("Ответ не получен");
-                        console.log(response);
+                    console.log(response);
+                    if (response.statusCode !== 200) {
+                        alert(response.error);
                         return;
                     }
                     var rowData = __assign(__assign({}, data), { hit: response.result, now: response.now });
                     _this.tableManager.addData(rowData);
                 },
+                error: function (response) {
+                    alert(response.message);
+                }
             });
         });
     };

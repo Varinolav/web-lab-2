@@ -156,6 +156,10 @@ body {
     border-radius: calc(var(--radius) + 2px);
     background: linear-gradient(180deg, var(--bg), var(--bg-soft));
     overflow: auto;
+    position: relative;
+    max-width: 100%;
+    max-height: 60vh;
+    -webkit-overflow-scrolling: touch;
 }
 
 .graph svg {
@@ -164,6 +168,12 @@ body {
     max-width: 100%;
     height: auto;
     transition: transform .35s ease;
+}
+
+.graph__frame > svg {
+    display: block;
+    width: 600px;   /* твой реальный размер SVG */
+    height: 500px;  /* твой реальный размер SVG */
 }
 
 .graph:hover svg {

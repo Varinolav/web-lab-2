@@ -1,3 +1,4 @@
+import config from "./config"
 export default class ResultTableManager {
     private pageSize: number = 5;
     private curPage: number = 1;
@@ -9,7 +10,9 @@ export default class ResultTableManager {
     constructor(table: HTMLTableElement) {
         this.allItems = [];
         this.table = table;
-        // this.loadFromStorage();
+        this.updateFromBean();
+        this.renderTable();
+        this.updatePaginationButtons();
     }
 
     public nextPage(): void {
@@ -19,7 +22,20 @@ export default class ResultTableManager {
     }
 
     public clearTable(): void {
+        process.env
         this.allItems = [];
+        $.ajax({
+            url: config.path + "action=clear",
+            type: "GET",
+            dataType: "json",
+            success: (response): void => {
+                if (response.error != null) {
+                    alert("Ответ не получен")
+                    console.log(response)
+                    return;
+                }
+            },
+        });
         this.renderTable();
         this.updatePaginationButtons();
     }
@@ -48,15 +64,23 @@ export default class ResultTableManager {
     }
 
 
-
-    /*private loadFromStorage(): void {
-        const data = sessionStorage.getItem(this.storageKey);
-        if (!data) return;
-        const parsedData = JSON.parse(data);
-        this.allItems = parsedData.items;
-        this.renderTable();
-        this.updatePaginationButtons();
-    }*/
+    private updateFromBean(): void {
+        const tbody = this.table.querySelector('#result-tbody') as HTMLTableSectionElement;
+        if (!tbody) return;
+        const rows = tbody.querySelectorAll('tr');
+        const items = [].map.call(rows, (row: HTMLTableRowElement) => {
+            const cells = row.querySelectorAll('td');
+            return {
+                x: cells[0]?.textContent?.trim() ?? '',
+                y: cells[1]?.textContent?.trim() ?? '',
+                r: cells[2]?.textContent?.trim() ?? '',
+                hit: cells[3]?.textContent?.trim().toLowerCase() === 'да',
+                now: cells[4]?.textContent?.trim() ?? ''
+            };
+        });
+        this.allItems = items;
+        tbody.innerHTML = '';
+    }
 
     private renderTable(): void {
         const tbody = this.table.querySelector('#result-tbody') as HTMLTableSectionElement;
@@ -64,7 +88,7 @@ export default class ResultTableManager {
         const currentData = this.getCurrentPageData().sort((a, b) => {
             const dateA = new Date(a.now);
             const dateB = new Date(b.now);
-            return dateB.getTime() - dateA.getTime();
+            return dateA.getTime() - dateB.getTime();
         });
         currentData.forEach(item => {
             const row = tbody.insertRow();

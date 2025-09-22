@@ -1,9 +1,11 @@
 {
   "devDependencies": {
-    "@types/jquery": "^3.5.33"
+    "@types/jquery": "^3.5.33",
+    "@types/node": "^24.5.2"
   },
   "dependencies": {
     "browserify": "^17.0.1",
+    "dotenv": "^17.2.2",
     "watchify": "^4.0.0"
   }
 }

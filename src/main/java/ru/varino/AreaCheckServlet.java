@@ -18,10 +18,15 @@ import java.util.Map;
 public class AreaCheckServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String x = request.getParameter("x");
         String y = request.getParameter("y");
         String r = request.getParameter("r");
+
+        log.info("Received /check request: x={}, y={}, r={}",
+                x, y, r);
 
         Point point = new Point(x, y, r);
 
@@ -32,15 +37,18 @@ public class AreaCheckServlet extends HttpServlet {
             session.setAttribute("pointsBean", bean);
         }
         bean.add(point);
+        log.info("Point added to bean. Total points now: {}", bean.getPoints().size());
 
-        var gson = new Gson();
+        Gson gson = new Gson();
         Map<String, Object> json = new HashMap<>();
+        json.put("statusCode", HttpServletResponse.SC_OK);
         json.put("x", x);
         json.put("y", y);
         json.put("r", r);
         json.put("result", point.getIsHit());
         json.put("now", point.getTime());
-        var msg = gson.toJson(json);
+
+        String msg = gson.toJson(json);
         response.setContentType("application/json");
         response.getWriter().write(msg);
     }

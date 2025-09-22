@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var config_1 = require("./config");
 var ResultTableManager = /** @class */ (function () {
     function ResultTableManager(table) {
         this.pageSize = 5;
@@ -7,7 +8,9 @@ var ResultTableManager = /** @class */ (function () {
         this.storageKey = 'results';
         this.allItems = [];
         this.table = table;
-        // this.loadFromStorage();
+        this.updateFromBean();
+        this.renderTable();
+        this.updatePaginationButtons();
     }
     ResultTableManager.prototype.nextPage = function () {
         if (this.curPage < this.getTotalPages())
@@ -16,7 +19,20 @@ var ResultTableManager = /** @class */ (function () {
         this.updatePaginationButtons();
     };
     ResultTableManager.prototype.clearTable = function () {
+        process.env;
         this.allItems = [];
+        $.ajax({
+            url: config_1.default.path + "action=clear",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                if (response.error != null) {
+                    alert("Ответ не получен");
+                    console.log(response);
+                    return;
+                }
+            },
+        });
         this.renderTable();
         this.updatePaginationButtons();
     };
@@ -40,21 +56,32 @@ var ResultTableManager = /** @class */ (function () {
         var endIndex = startIndex + this.pageSize;
         return this.allItems.slice(startIndex, endIndex);
     };
-    /*private loadFromStorage(): void {
-        const data = sessionStorage.getItem(this.storageKey);
-        if (!data) return;
-        const parsedData = JSON.parse(data);
-        this.allItems = parsedData.items;
-        this.renderTable();
-        this.updatePaginationButtons();
-    }*/
+    ResultTableManager.prototype.updateFromBean = function () {
+        var tbody = this.table.querySelector('#result-tbody');
+        if (!tbody)
+            return;
+        var rows = tbody.querySelectorAll('tr');
+        var items = [].map.call(rows, function (row) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+            var cells = row.querySelectorAll('td');
+            return {
+                x: (_c = (_b = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : '',
+                y: (_f = (_e = (_d = cells[1]) === null || _d === void 0 ? void 0 : _d.textContent) === null || _e === void 0 ? void 0 : _e.trim()) !== null && _f !== void 0 ? _f : '',
+                r: (_j = (_h = (_g = cells[2]) === null || _g === void 0 ? void 0 : _g.textContent) === null || _h === void 0 ? void 0 : _h.trim()) !== null && _j !== void 0 ? _j : '',
+                hit: ((_l = (_k = cells[3]) === null || _k === void 0 ? void 0 : _k.textContent) === null || _l === void 0 ? void 0 : _l.trim().toLowerCase()) === 'да',
+                now: (_p = (_o = (_m = cells[4]) === null || _m === void 0 ? void 0 : _m.textContent) === null || _o === void 0 ? void 0 : _o.trim()) !== null && _p !== void 0 ? _p : ''
+            };
+        });
+        this.allItems = items;
+        tbody.innerHTML = '';
+    };
     ResultTableManager.prototype.renderTable = function () {
         var tbody = this.table.querySelector('#result-tbody');
         tbody.innerHTML = '';
         var currentData = this.getCurrentPageData().sort(function (a, b) {
             var dateA = new Date(a.now);
             var dateB = new Date(b.now);
-            return dateB.getTime() - dateA.getTime();
+            return dateA.getTime() - dateB.getTime();
         });
         currentData.forEach(function (item) {
             var row = tbody.insertRow();

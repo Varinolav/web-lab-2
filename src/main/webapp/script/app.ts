@@ -2,16 +2,15 @@ import Config from "./config";
 import ResultTableManager from "./ResultTableManager";
 import DataManager from "./dataManager";
 import SvgManager from "./SvgManager";
+import config from "./config"
 
 export default class App {
-    private config: Config;
     private tableManager: ResultTableManager;
     private dataManager: DataManager;
     private svgManager: SvgManager;
 
 
-    constructor(config: Config, tableManager: ResultTableManager, dataManager: DataManager, svgManager: SvgManager) {
-        this.config = config;
+    constructor(tableManager: ResultTableManager, dataManager: DataManager, svgManager: SvgManager) {
         this.tableManager = tableManager;
         this.dataManager = dataManager;
         this.svgManager = svgManager;
@@ -85,18 +84,22 @@ export default class App {
             data["action"] = "submit";
 
             $.ajax({
-                url: this.config.get("path") + $.param(data),
+                url: config.path + $.param(data),
                 type: "GET",
                 dataType: "json",
                 success: (response): void => {
-                    if (response.error != null) {
-                        alert("Ответ не получен")
-                        console.log(response)
+                    console.log(response);
+                    if (response.statusCode !== 200) {
+                        alert(response.error);
                         return;
                     }
+
                     const rowData: object = {...data, hit: response.result, now: response.now};
                     this.tableManager.addData(rowData);
                 },
+                error: (response: any): void => {
+                    alert(response.message);
+                }
             });
         });
     }

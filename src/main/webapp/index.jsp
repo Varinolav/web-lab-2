@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Лабораторная №1 — Вариант 466985</title>
+    <title>Лабораторная №2</title>
 
     <!-- Enterprise-grade typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap"
@@ -19,8 +19,8 @@
 <div class="wrap">
     <header class="header">
         <div class="header__top">
-            <h1>Лабораторная работа №1</h1>
-            <span class="badge">Вариант&nbsp;466985</span>
+            <h1>Лабораторная работа №2</h1>
+            <span class="badge">Вариант&nbsp;1705</span>
         </div>
         <p class="subtitle">Павленко Иван Дмитриевич · P3217</p>
     </header>
@@ -29,26 +29,44 @@
         <!-- GRAPH -->
         <section class="graph card" aria-label="График">
             <div class="graph__frame">
-                <svg width="600" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
+                <svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img"
                      aria-label="Система координат">
                     <defs>
                         <linearGradient id="gradArea" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#60a5fa"/>
-                            <stop offset="100%" stop-color="#22d3ee"/>
+                            <stop offset="0%" stop-color="#60a5fa"></stop>
+                            <stop offset="100%" stop-color="#22d3ee"></stop>
                         </linearGradient>
                         <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="currentColor"/>
+                            <polygon points="0 0, 10 3.5, 0 7" fill="currentColor"></polygon>
                         </marker>
+                        <mask id="cutMask" maskUnits="userSpaceOnUse">
+                            <rect x="0" y="0" width="600" height="500" fill="black"></rect>
+                            <ellipse cx="250" cy="250" rx="100" ry="50" fill="white"></ellipse>
+
+                            <g fill="black">
+                                <circle cx="235" cy="298" r="15"></circle>
+                                <circle cx="265" cy="298" r="15"></circle>
+                                <circle cx="285" cy="295" r="18"></circle>
+                                <circle cx="215" cy="295" r="18"></circle>
+
+
+                                <circle cx="285" cy="205" r="20"></circle>
+                                <circle cx="215" cy="205" r="20"></circle>
+
+                                <circle cx="250" cy="200" r="10"></circle>
+                            </g>
+                        </mask>
                     </defs>
 
-                    <!-- Areas -->
-                    <polygon points="200,250 250,250 250,300" class="fill-gradient"/>
-                    <path d="M 250 250 L 250 150 A 100 100 0 0 1 350 250 Z" class="fill-gradient"/>
-                    <rect x="250" y="250" width="100" height="100" class="fill-gradient"/>
 
-                    <!-- Axes -->
-                    <line x1="50" y1="250" x2="500" y2="250" stroke-width="2" marker-end="url(#arrowhead)"/>
-                    <line x1="250" y1="450" x2="250" y2="50" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                    <ellipse cx="250" cy="250" rx="100" ry="50"
+                             fill="url(#gradArea)" fill-opacity="0.3"
+                             stroke="currentColor" stroke-width="2"
+                             mask="url(#cutMask)"></ellipse>
+
+                    <line x1="50" y1="250" x2="500" y2="250" stroke-width="2" marker-end="url(#arrowhead)"></line>
+                    <line x1="250" y1="450" x2="250" y2="50" stroke-width="2" marker-end="url(#arrowhead)"></line>
 
                     <text x="510" y="255" font-size="16">x</text>
                     <text x="255" y="40" font-size="16">y</text>
@@ -65,17 +83,17 @@
                     <text x="260" y="315" font-size="14">-R/2</text>
 
                     <!-- Ticks -->
-                    <line x1="150" y1="245" x2="150" y2="255" stroke-width="2"/>
-                    <line x1="200" y1="245" x2="200" y2="255" stroke-width="2"/>
-                    <line x1="300" y1="245" x2="300" y2="255" stroke-width="2"/>
-                    <line x1="350" y1="245" x2="350" y2="255" stroke-width="2"/>
+                    <line x1="150" y1="245" x2="150" y2="255" stroke-width="2"></line>
+                    <line x1="200" y1="245" x2="200" y2="255" stroke-width="2"></line>
+                    <line x1="300" y1="245" x2="300" y2="255" stroke-width="2"></line>
+                    <line x1="350" y1="245" x2="350" y2="255" stroke-width="2"></line>
 
-                    <line x1="245" y1="150" x2="255" y2="150" stroke-width="2"/>
-                    <line x1="245" y1="200" x2="255" y2="200" stroke-width="2"/>
-                    <line x1="245" y1="300" x2="255" y2="300" stroke-width="2"/>
-                    <line x1="245" y1="350" x2="255" y2="350" stroke-width="2"/>
+                    <line x1="245" y1="150" x2="255" y2="150" stroke-width="2"></line>
+                    <line x1="245" y1="200" x2="255" y2="200" stroke-width="2"></line>
+                    <line x1="245" y1="300" x2="255" y2="300" stroke-width="2"></line>
+                    <line x1="245" y1="350" x2="255" y2="350" stroke-width="2"></line>
 
-                    <circle id="pointer" r="5" cx="150" cy="150" visibility="hidden"/>
+                    <circle id="pointer" r="5" cx="150" cy="150" visibility="hidden"></circle>
                 </svg>
             </div>
         </section>
