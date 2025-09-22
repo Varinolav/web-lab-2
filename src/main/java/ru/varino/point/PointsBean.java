@@ -1,6 +1,4 @@
-package ru.varino;
-
-import lombok.Getter;
+package ru.varino.point;
 
 import java.io.Serializable;
 import java.util.ArrayList;

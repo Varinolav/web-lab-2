@@ -1,4 +1,4 @@
-package ru.varino;
+package ru.varino.servlet;
 
 public enum ActionType {
     CLEAR("clear"),

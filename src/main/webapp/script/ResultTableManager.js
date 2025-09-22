@@ -5,13 +5,15 @@ var ResultTableManager = /** @class */ (function () {
     function ResultTableManager(table) {
         this.pageSize = 5;
         this.curPage = 1;
-        this.storageKey = 'results';
         this.allItems = [];
         this.table = table;
         this.updateFromBean();
         this.renderTable();
         this.updatePaginationButtons();
     }
+    ResultTableManager.prototype.getItems = function () {
+        return this.allItems;
+    };
     ResultTableManager.prototype.nextPage = function () {
         if (this.curPage < this.getTotalPages())
             this.curPage++;
@@ -19,7 +21,6 @@ var ResultTableManager = /** @class */ (function () {
         this.updatePaginationButtons();
     };
     ResultTableManager.prototype.clearTable = function () {
-        process.env;
         this.allItems = [];
         $.ajax({
             url: config_1.default.path + "action=clear",

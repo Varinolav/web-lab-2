@@ -1,4 +1,4 @@
-package ru.varino;
+package ru.varino.point;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,8 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PointHitChecker {
     private final Point point;
-
-    private static final MathContext MC = new MathContext(20, RoundingMode.HALF_UP);
+    private final MathContext MC = new MathContext(20, RoundingMode.HALF_UP);
 
     public boolean isHit() {
         return isInsideEllipse() && !isInsideAnyCutCircle();
@@ -60,7 +59,7 @@ public class PointHitChecker {
 
     private boolean isInsideCircle(BigDecimal x, BigDecimal y,
                                    BigDecimal x0, BigDecimal y0, BigDecimal radius) {
-        // (x - x0)^2 + (y - y0)^2 = r^2
+        // (x - x0)^2 + (y - y0)^2 < r^2
         BigDecimal x1 = x.subtract(x0, MC).pow(2, MC);
         BigDecimal y1 = y.subtract(y0, MC).pow(2, MC);
         BigDecimal sumXY = x1.add(y1, MC);

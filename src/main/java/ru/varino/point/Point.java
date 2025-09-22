@@ -1,4 +1,4 @@
-package ru.varino;
+package ru.varino.point;
 
 import lombok.Data;
 

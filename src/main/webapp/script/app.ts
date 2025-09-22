@@ -1,4 +1,3 @@
-import Config from "./config";
 import ResultTableManager from "./ResultTableManager";
 import DataManager from "./dataManager";
 import SvgManager from "./SvgManager";
@@ -23,6 +22,7 @@ export default class App {
         this.initializeInputButtonsSelection();
         this.initializeServerRequesting();
         this.svgManager.initializeSvgClick();
+        this.svgManager.initializePointsDrawOnStart();
     }
 
     private initializeInputButtons() {
@@ -34,21 +34,24 @@ export default class App {
             this.dataManager.x = $(event.target).val() as string;
         });
 
-        $("input[name=R-button]").on("click", (event): void => {
+        $("input[name=R-radio]").on("click", (event): void => {
             this.dataManager.r = $(event.target).val() as string;
         });
     }
 
     private initializePointDrawing(): void {
-        $("input[name=X-button]").on("click", () => this.svgManager.drawPoint());
-        $("input[name=R-button]").on("click", () => this.svgManager.drawPoint());
-        $("input[name=Y-input]").on("input", () => this.svgManager.drawPoint());
+        $("input[name=X-button]").on("click", () => this.svgManager.drawTempPoint());
+        $("input[name=R-button]").on("click", () => this.svgManager.drawTempPoint());
+        $("input[name=Y-input]").on("input", () => this.svgManager.drawTempPoint());
     }
 
     private initializeTableButtons(): void {
         $("#prev-btn").on("click", () => this.tableManager.previousPage());
         $("#next-btn").on("click", () => this.tableManager.nextPage());
-        $("#clear-btn").on("click", () => this.tableManager.clearTable());
+        $("#clear-btn").on("click", () => {
+            this.tableManager.clearTable();
+            this.svgManager.clearPoints();
+        });
     }
 
     private initializeInputButtonsSelection() {
@@ -96,9 +99,11 @@ export default class App {
 
                     const rowData: object = {...data, hit: response.result, now: response.now};
                     this.tableManager.addData(rowData);
+                    this.svgManager.drawPoint(data.x, data.y, data.r, response.result);
                 },
                 error: (response: any): void => {
-                    alert(response.message);
+                    console.log(response);
+                    alert(response.responseJSON.error);
                 }
             });
         });

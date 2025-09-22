@@ -1,10 +1,10 @@
 import config from "./config"
+import SvgManager from "./SvgManager";
 export default class ResultTableManager {
     private pageSize: number = 5;
     private curPage: number = 1;
     private allItems: any[];
     private table: HTMLTableElement;
-    private readonly storageKey: string = 'results';
 
 
     constructor(table: HTMLTableElement) {
@@ -15,6 +15,10 @@ export default class ResultTableManager {
         this.updatePaginationButtons();
     }
 
+    public getItems(): any[] {
+        return this.allItems;
+    }
+
     public nextPage(): void {
         if (this.curPage < this.getTotalPages()) this.curPage++;
         this.renderTable();
@@ -22,7 +26,6 @@ export default class ResultTableManager {
     }
 
     public clearTable(): void {
-        process.env
         this.allItems = [];
         $.ajax({
             url: config.path + "action=clear",

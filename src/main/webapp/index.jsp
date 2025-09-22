@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
-<%@ page import="ru.varino.Point" %>
-<%@ page import="ru.varino.PointsBean" %>
+<%@ page import="ru.varino.point.Point" %>
+<%@ page import="ru.varino.point.PointsBean" %>
 <!doctype html>
 <html lang="ru">
 <head>
@@ -93,7 +93,7 @@
                     <line x1="245" y1="300" x2="255" y2="300" stroke-width="2"></line>
                     <line x1="245" y1="350" x2="255" y2="350" stroke-width="2"></line>
 
-                    <circle id="pointer" r="5" cx="150" cy="150" visibility="hidden"></circle>
+                    <circle id="pointer" r="3" cx="150" cy="150" visibility="hidden"></circle>
                 </svg>
             </div>
         </section>
@@ -105,34 +105,34 @@
             <div class="field">
                 <div class="label"><strong>X</strong></div>
                 <div class="buttons-group">
+                    <input type="button" name="X-button" class="input-btn" value="-5"/>
+                    <input type="button" name="X-button" class="input-btn" value="-4"/>
+                    <input type="button" name="X-button" class="input-btn" value="-3"/>
                     <input type="button" name="X-button" class="input-btn" value="-2"/>
-                    <input type="button" name="X-button" class="input-btn" value="-1.5"/>
                     <input type="button" name="X-button" class="input-btn" value="-1"/>
-                    <input type="button" name="X-button" class="input-btn" value="-0.5"/>
                     <input type="button" name="X-button" class="input-btn" value="0"/>
-                    <input type="button" name="X-button" class="input-btn" value="0.5"/>
                     <input type="button" name="X-button" class="input-btn" value="1"/>
-                    <input type="button" name="X-button" class="input-btn" value="1.5"/>
                     <input type="button" name="X-button" class="input-btn" value="2"/>
+                    <input type="button" name="X-button" class="input-btn" value="3"/>
                 </div>
             </div>
 
             <div class="field">
                 <div class="label"><strong>Y</strong></div>
                 <div class="input-wrap">
-                    <input type="number" id="y-input" name="Y-input" placeholder="От -5 до 5" class="y-input"
+                    <input type="number" id="y-input" name="Y-input" placeholder="От -3 до 5" class="y-input"
                            inputmode="decimal"/>
                 </div>
             </div>
 
             <div class="field">
                 <div class="label"><strong>R</strong></div>
-                <div class="buttons-group">
-                    <input type="button" name="R-button" class="input-btn" value="1"/>
-                    <input type="button" name="R-button" class="input-btn" value="1.5"/>
-                    <input type="button" name="R-button" class="input-btn" value="2"/>
-                    <input type="button" name="R-button" class="input-btn" value="2.5"/>
-                    <input type="button" name="R-button" class="input-btn" value="3"/>
+                <div class="radio-group">
+                    <input type="radio" name="R-radio" class="input-radio" value="1"/>
+                    <input type="radio" name="R-radio" class="input-radio" value="2"/>
+                    <input type="radio" name="R-radio" class="input-radio" value="3"/>
+                    <input type="radio" name="R-radio" class="input-radio" value="4"/>
+                    <input type="radio" name="R-radio" class="input-radio" value="5"/>
                 </div>
             </div>
 

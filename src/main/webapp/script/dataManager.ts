@@ -28,7 +28,7 @@ export default class DataManager {
         this._y = value;
     }
 
-    public getData(): object {
+    public getData(): { x: string, y: string, r: string } {
         return {x: this.x, y: this.y, r: this.r};
     }
 

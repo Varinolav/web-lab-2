@@ -1,191 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],2:[function(require,module,exports){
-(function (process){(function (){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = require("./config");
@@ -193,13 +6,15 @@ var ResultTableManager = /** @class */ (function () {
     function ResultTableManager(table) {
         this.pageSize = 5;
         this.curPage = 1;
-        this.storageKey = 'results';
         this.allItems = [];
         this.table = table;
         this.updateFromBean();
         this.renderTable();
         this.updatePaginationButtons();
     }
+    ResultTableManager.prototype.getItems = function () {
+        return this.allItems;
+    };
     ResultTableManager.prototype.nextPage = function () {
         if (this.curPage < this.getTotalPages())
             this.curPage++;
@@ -207,7 +22,6 @@ var ResultTableManager = /** @class */ (function () {
         this.updatePaginationButtons();
     };
     ResultTableManager.prototype.clearTable = function () {
-        process.env;
         this.allItems = [];
         $.ajax({
             url: config_1.default.path + "action=clear",
@@ -314,15 +128,15 @@ var ResultTableManager = /** @class */ (function () {
 }());
 exports.default = ResultTableManager;
 
-}).call(this)}).call(this,require('_process'))
-},{"./config":5,"_process":1}],3:[function(require,module,exports){
+},{"./config":4}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var SvgManager = /** @class */ (function () {
-    function SvgManager(dataManager) {
+    function SvgManager(dataManager, resultTableManager) {
         this.dataManager = dataManager;
+        this.resultTableManager = resultTableManager;
     }
-    SvgManager.prototype.drawPoint = function () {
+    SvgManager.prototype.drawTempPoint = function () {
         if (!this.dataManager.isValid()) {
             return;
         }
@@ -353,14 +167,43 @@ var SvgManager = /** @class */ (function () {
             var mathY = (svgCenterY - svgY) / scale * parseFloat(_this.dataManager.r);
             _this.dataManager.x = mathX.toString();
             _this.dataManager.y = mathY.toString();
-            _this.drawPoint();
+            _this.drawTempPoint();
         });
+    };
+    SvgManager.prototype.drawPoint = function (x, y, r, result) {
+        var svgCenterX = 250;
+        var svgCenterY = 250;
+        var coordinateX = svgCenterX + parseFloat(x) / parseFloat(r) * 100;
+        var coordinateY = svgCenterY - parseFloat(y) / parseFloat(r) * 100;
+        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", coordinateX.toString());
+        circle.setAttribute("cy", coordinateY.toString());
+        circle.setAttribute("r", "3");
+        var success = result ? "pointer__success" : "pointer__failure";
+        circle.setAttribute("class", success);
+        $("svg").append(circle);
+    };
+    SvgManager.prototype.initializePointsDrawOnStart = function () {
+        var _this = this;
+        jQuery(function () {
+            _this.redrawPoints();
+        });
+    };
+    SvgManager.prototype.redrawPoints = function () {
+        var _this = this;
+        var items = this.resultTableManager.getItems();
+        items.forEach(function (item) {
+            _this.drawPoint(item.x, item.y, item.r, item.hit);
+        });
+    };
+    SvgManager.prototype.clearPoints = function () {
+        $(".pointer__success, .pointer__failure").remove();
     };
     return SvgManager;
 }());
 exports.default = SvgManager;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
@@ -388,6 +231,7 @@ var App = /** @class */ (function () {
         this.initializeInputButtonsSelection();
         this.initializeServerRequesting();
         this.svgManager.initializeSvgClick();
+        this.svgManager.initializePointsDrawOnStart();
     };
     App.prototype.initializeInputButtons = function () {
         var _this = this;
@@ -397,21 +241,24 @@ var App = /** @class */ (function () {
         $("input[name=X-button]").on("click", function (event) {
             _this.dataManager.x = $(event.target).val();
         });
-        $("input[name=R-button]").on("click", function (event) {
+        $("input[name=R-radio]").on("click", function (event) {
             _this.dataManager.r = $(event.target).val();
         });
     };
     App.prototype.initializePointDrawing = function () {
         var _this = this;
-        $("input[name=X-button]").on("click", function () { return _this.svgManager.drawPoint(); });
-        $("input[name=R-button]").on("click", function () { return _this.svgManager.drawPoint(); });
-        $("input[name=Y-input]").on("input", function () { return _this.svgManager.drawPoint(); });
+        $("input[name=X-button]").on("click", function () { return _this.svgManager.drawTempPoint(); });
+        $("input[name=R-button]").on("click", function () { return _this.svgManager.drawTempPoint(); });
+        $("input[name=Y-input]").on("input", function () { return _this.svgManager.drawTempPoint(); });
     };
     App.prototype.initializeTableButtons = function () {
         var _this = this;
         $("#prev-btn").on("click", function () { return _this.tableManager.previousPage(); });
         $("#next-btn").on("click", function () { return _this.tableManager.nextPage(); });
-        $("#clear-btn").on("click", function () { return _this.tableManager.clearTable(); });
+        $("#clear-btn").on("click", function () {
+            _this.tableManager.clearTable();
+            _this.svgManager.clearPoints();
+        });
     };
     App.prototype.initializeInputButtonsSelection = function () {
         var _this = this;
@@ -457,9 +304,11 @@ var App = /** @class */ (function () {
                     }
                     var rowData = __assign(__assign({}, data), { hit: response.result, now: response.now });
                     _this.tableManager.addData(rowData);
+                    _this.svgManager.drawPoint(data.x, data.y, data.r, response.result);
                 },
                 error: function (response) {
-                    alert(response.message);
+                    console.log(response);
+                    alert(response.responseJSON.error);
                 }
             });
         });
@@ -468,14 +317,14 @@ var App = /** @class */ (function () {
 }());
 exports.default = App;
 
-},{"./config":5}],5:[function(require,module,exports){
+},{"./config":4}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     path: '/server?'
 };
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var DataManager = /** @class */ (function () {
@@ -521,7 +370,7 @@ var DataManager = /** @class */ (function () {
 }());
 exports.default = DataManager;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
@@ -531,7 +380,7 @@ var SvgManager_1 = require("./SvgManager");
 var dataManager = new dataManager_1.default();
 var table = document.getElementById("result-table");
 var tableManager = new ResultTableManager_1.default(table);
-var svgManager = new SvgManager_1.default(dataManager);
+var svgManager = new SvgManager_1.default(dataManager, tableManager);
 new app_1.default(tableManager, dataManager, svgManager).initializeListeners();
 
-},{"./ResultTableManager":2,"./SvgManager":3,"./app":4,"./dataManager":6}]},{},[7]);
+},{"./ResultTableManager":1,"./SvgManager":2,"./app":3,"./dataManager":5}]},{},[6]);

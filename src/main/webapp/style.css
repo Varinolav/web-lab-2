@@ -1,6 +1,4 @@
-/* =========================
-           Design Tokens (FAANG-ish)
-           ========================= */
+
 :root {
     --bg: #ffffff;
     --bg-elev: #ffffff;
@@ -10,12 +8,12 @@
     --text-sub: #4c5565;
     --muted: #6b7280;
 
-    --primary: #2563eb; /* brand blue */
+    --primary: #2563eb;
     --primary-600: #1d4ed8;
     --primary-100: #e8eefc;
 
     --success: #059669;
-    --danger: #ef4444;
+    --danger: #68d04c;
 
     --stroke: #e5e7eb;
     --ring: 0 0 0 3px rgba(37, 99, 235, .18);
@@ -42,7 +40,7 @@
         --primary-100: #12243f;
 
         --success: #34d399;
-        --danger: #f87171;
+        --danger: #802a2a;
 
         --stroke: #202734;
         --ring: 0 0 0 3px rgba(96, 165, 250, .25);
@@ -51,7 +49,6 @@
     }
 }
 
-/* ======= Base ======= */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -77,7 +74,6 @@ body {
     margin: 28px auto 40px;
 }
 
-/* ======= Header ======= */
 .header {
     position: sticky;
     top: 16px;
@@ -124,7 +120,6 @@ body {
     font-weight: 600;
 }
 
-/* ======= Layout ======= */
 .content {
     margin-top: 22px;
     display: grid;
@@ -145,7 +140,6 @@ body {
     box-shadow: var(--shadow-2);
 }
 
-/* ======= Graph Panel ======= */
 .graph {
     padding: clamp(12px, 2vw, 18px);
 }
@@ -172,15 +166,15 @@ body {
 
 .graph__frame > svg {
     display: block;
-    width: 600px;   /* твой реальный размер SVG */
-    height: 500px;  /* твой реальный размер SVG */
+    width: 600px;
+    height: 500px;
 }
 
 .graph:hover svg {
     transform: translateY(-1px);
 }
 
-/* SVG theming */
+
 svg text {
     fill: var(--text);
     font-weight: 700;
@@ -201,24 +195,24 @@ svg rect, svg polygon, svg path {
 
 #pointer {
     fill: var(--danger);
+    stroke: color-mix(in oklab, var(--danger) 70%, red);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, .45));
+}
+
+.pointer__success {
+    fill: var(--success);
+    stroke: color-mix(in oklab, var(--success) 70%, black);
+    stroke-width: 1.5;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, .45));
+}
+.pointer__failure {
+    fill: var(--danger);
     stroke: color-mix(in oklab, var(--danger) 70%, black);
     stroke-width: 1.5;
     filter: drop-shadow(0 0 8px rgba(239, 68, 68, .45));
-    animation: pulse 1.6s ease-in-out infinite;
 }
 
-@keyframes pulse {
-    0%, 100% {
-        r: 5;
-        opacity: .95;
-    }
-    50% {
-        r: 7;
-        opacity: .75;
-    }
-}
-
-/* ======= Controls ======= */
 .controls {
     display: grid;
     gap: 14px;
@@ -277,7 +271,6 @@ svg rect, svg polygon, svg path {
     transform: translateY(1px);
 }
 
-/* Selected chip */
 .input-btn.selected {
     background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 12%, var(--bg)), var(--bg-soft));
     border-color: color-mix(in oklab, var(--primary) 60%, var(--stroke));
@@ -323,7 +316,6 @@ svg rect, svg polygon, svg path {
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--success) 30%, transparent);
 }
 
-/* ======= Results ======= */
 .results {
     margin-top: 22px;
     padding: clamp(14px, 2.2vw, 18px);
@@ -403,17 +395,121 @@ svg rect, svg polygon, svg path {
     cursor: not-allowed;
 }
 
-/* ======= A11y focus ======= */
 :focus-visible {
     outline: none;
     box-shadow: var(--ring);
     border-radius: 10px;
 }
 
-/* ======= Motion preferences ======= */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation: none !important;
         transition: none !important;
     }
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.input-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1px solid var(--stroke);
+    background: linear-gradient(180deg, var(--bg), var(--bg-soft));
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.input-radio::after {
+    content: attr(value);
+    position: absolute;
+    font-size: 14px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+
+.input-radio:hover {
+    box-shadow: var(--ring);
+    border-color: color-mix(in oklab, var(--primary) 70%, var(--stroke));
+    transform: translateY(-1px);
+}
+
+.input-radio:active {
+    transform: translateY(0);
+}
+
+.input-radio:checked {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--primary) 12%, var(--bg)), var(--bg-soft));
+    border-color: color-mix(in oklab, var(--primary) 60%, var(--stroke));
+    color: color-mix(in oklab, var(--primary) 85%, var(--text));
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.16), var(--ring);
+}
+
+.input-radio:checked::after {
+    color: color-mix(in oklab, var(--primary) 85%, var(--text));
+    font-weight: 900;
+}
+
+.input-radio:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
+@media (max-width: 768px) {
+    .radio-group {
+        gap: 8px;
+    }
+
+    .input-radio {
+        width: 40px;
+        height: 40px;
+    }
+
+    .input-radio::after {
+        font-size: 13px;
+    }
+}
+
+.input-radio:checked {
+    animation: radioSelect 0.3s ease;
+}
+
+@keyframes radioSelect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.input-radio:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: color-mix(in oklab, var(--muted) 10%, var(--bg-soft));
+}
+
+.input-radio:disabled:hover {
+    box-shadow: none;
+    border-color: var(--stroke);
+    transform: none;
+}
+
+.input-radio:disabled::after {
+    opacity: 0.7;
 }

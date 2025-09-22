@@ -1,4 +1,4 @@
-package ru.varino;
+package ru.varino.point;
 
 import java.math.BigDecimal;
 
@@ -22,16 +22,16 @@ public class PointValidator {
     }
 
     private void validateRange(BigDecimal x, BigDecimal y, BigDecimal r) {
-        if (x.compareTo(BigDecimal.valueOf(-2)) < 0 || x.compareTo(BigDecimal.valueOf(2)) > 0) {
-            throw new IllegalArgumentException("X must be between -2 and 2");
+        if (x.compareTo(BigDecimal.valueOf(-10)) < 0 || x.compareTo(BigDecimal.valueOf(10)) > 0) {
+            throw new IllegalArgumentException("X must be between -10 and 10");
         }
 
-        if (y.compareTo(BigDecimal.valueOf(-5)) < 0 || y.compareTo(BigDecimal.valueOf(5)) > 0) {
-            throw new IllegalArgumentException("Y must be between -5 and 5");
+        if (y.compareTo(BigDecimal.valueOf(-10)) < 0 || y.compareTo(BigDecimal.valueOf(10)) > 0) {
+            throw new IllegalArgumentException("Y must be between -10 and 10");
         }
 
-        if (r.compareTo(BigDecimal.ZERO) <= 0 || r.compareTo(BigDecimal.valueOf(3)) > 0) {
-            throw new IllegalArgumentException("R must be between 0 (exclusive) and 3 (inclusive)");
+        if (r.compareTo(BigDecimal.ZERO) <= 0 || r.compareTo(BigDecimal.valueOf(5)) > 0) {
+            throw new IllegalArgumentException("R must be between 0 and 5");
         }
     }
 }

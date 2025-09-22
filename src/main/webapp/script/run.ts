@@ -9,5 +9,5 @@ let dataManager: DataManager = new DataManager();
 const table: HTMLTableElement = document.getElementById("result-table") as HTMLTableElement;
 
 let tableManager: ResultTableManager = new ResultTableManager(table);
-let svgManager: SvgManager = new SvgManager(dataManager);
+let svgManager: SvgManager = new SvgManager(dataManager, tableManager);
 new App(tableManager, dataManager, svgManager).initializeListeners();

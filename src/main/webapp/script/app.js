@@ -25,6 +25,7 @@ var App = /** @class */ (function () {
         this.initializeInputButtonsSelection();
         this.initializeServerRequesting();
         this.svgManager.initializeSvgClick();
+        this.svgManager.initializePointsDrawOnStart();
     };
     App.prototype.initializeInputButtons = function () {
         var _this = this;
@@ -34,21 +35,24 @@ var App = /** @class */ (function () {
         $("input[name=X-button]").on("click", function (event) {
             _this.dataManager.x = $(event.target).val();
         });
-        $("input[name=R-button]").on("click", function (event) {
+        $("input[name=R-radio]").on("click", function (event) {
             _this.dataManager.r = $(event.target).val();
         });
     };
     App.prototype.initializePointDrawing = function () {
         var _this = this;
-        $("input[name=X-button]").on("click", function () { return _this.svgManager.drawPoint(); });
-        $("input[name=R-button]").on("click", function () { return _this.svgManager.drawPoint(); });
-        $("input[name=Y-input]").on("input", function () { return _this.svgManager.drawPoint(); });
+        $("input[name=X-button]").on("click", function () { return _this.svgManager.drawTempPoint(); });
+        $("input[name=R-button]").on("click", function () { return _this.svgManager.drawTempPoint(); });
+        $("input[name=Y-input]").on("input", function () { return _this.svgManager.drawTempPoint(); });
     };
     App.prototype.initializeTableButtons = function () {
         var _this = this;
         $("#prev-btn").on("click", function () { return _this.tableManager.previousPage(); });
         $("#next-btn").on("click", function () { return _this.tableManager.nextPage(); });
-        $("#clear-btn").on("click", function () { return _this.tableManager.clearTable(); });
+        $("#clear-btn").on("click", function () {
+            _this.tableManager.clearTable();
+            _this.svgManager.clearPoints();
+        });
     };
     App.prototype.initializeInputButtonsSelection = function () {
         var _this = this;
@@ -94,9 +98,11 @@ var App = /** @class */ (function () {
                     }
                     var rowData = __assign(__assign({}, data), { hit: response.result, now: response.now });
                     _this.tableManager.addData(rowData);
+                    _this.svgManager.drawPoint(data.x, data.y, data.r, response.result);
                 },
                 error: function (response) {
-                    alert(response.message);
+                    console.log(response);
+                    alert(response.responseJSON.error);
                 }
             });
         });

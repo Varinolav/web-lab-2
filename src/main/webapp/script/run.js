@@ -7,5 +7,5 @@ var SvgManager_1 = require("./SvgManager");
 var dataManager = new dataManager_1.default();
 var table = document.getElementById("result-table");
 var tableManager = new ResultTableManager_1.default(table);
-var svgManager = new SvgManager_1.default(dataManager);
+var svgManager = new SvgManager_1.default(dataManager, tableManager);
 new app_1.default(tableManager, dataManager, svgManager).initializeListeners();
